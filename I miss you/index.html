@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>小陈生日快乐</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", Arial,
+          sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: absolute;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.1) 1px,
+          transparent 1px
+        );
+        background-size: 50px 50px;
+        animation: float 20s infinite linear;
+      }
+
+      @keyframes float {
+        0% {
+          transform: translate(0, 0);
+        }
+        100% {
+          transform: translate(-50px, -50px);
+        }
+      }
+
+      .email-container {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        max-width: 500px;
+        width: 100%;
+        padding: 40px 30px;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+        animation: slideIn 0.6s ease-out;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .heart {
+        font-size: 40px;
+        color: #ff6b9d;
+        margin-bottom: 20px;
+        animation: heartbeat 1.5s infinite;
+      }
+
+      @keyframes heartbeat {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.2);
+        }
+      }
+
+      h1 {
+        font-size: 42px;
+        color: #333;
+        margin-bottom: 20px;
+        font-weight: bold;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .subtitle {
+        font-size: 18px;
+        color: #666;
+        margin-bottom: 30px;
+        line-height: 1.6;
+      }
+
+      .button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 18px 50px;
+        font-size: 20px;
+        font-weight: bold;
+        border-radius: 50px;
+        cursor: pointer;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .button::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+      }
+
+      .button:hover::before {
+        width: 300px;
+        height: 300px;
+      }
+
+      .button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+      }
+
+      .button:active {
+        transform: translateY(-1px);
+      }
+
+      .popup {
+        position: fixed;
+        background: white;
+        border-radius: 12px;
+        padding: 20px 25px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        z-index: 10000;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+        max-width: 350px;
+        word-wrap: break-word;
+        animation: popupAppear 0.3s ease-out;
+        border: 2px solid rgba(255, 255, 255, 0.8);
+      }
+
+      @keyframes popupAppear {
+        from {
+          opacity: 0;
+          transform: scale(0.8) translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+
+      .popup.fadeOut {
+        animation: popupFadeOut 0.3s ease-in forwards;
+      }
+
+      @keyframes popupFadeOut {
+        to {
+          opacity: 0;
+          transform: scale(0.8) translateY(-20px);
+        }
+      }
+
+      .sparkle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: white;
+        border-radius: 50%;
+        pointer-events: none;
+        animation: sparkleAnimation 2s ease-out forwards;
+      }
+
+      @keyframes sparkleAnimation {
+        0% {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+        100% {
+          opacity: 0;
+          transform: scale(0) translateY(-50px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <div class="heart">💌</div>
+      <h1>生日快乐</h1>
+      <p class="subtitle">
+        亲爱的陈宝，你有一封特别的祝福邮件<br />点击下方按钮，打开属于你的惊喜
+        ✨
+      </p>
+      <button class="button" onclick="startSurprise()">确认</button>
+    </div>
+
+    <script>
+      const messages = [
+        // 新增的祝福句子
+        "烦恼烦恼都消失❤️❤️",
+        "每天都要开开心心哦❤️❤️",
+        "晚安❤️❤️",
+        "早安❤️❤️",
+        "保持好心情❤️❤️",
+        "喜欢喜欢就是喜欢❤️❤️",
+        "金榜题名顺顺利利❤️❤️",
+        "当然，别忘记想我哦！❤️❤️",
+        "吃饭没呀❤️❤️",
+        "午安❤️❤️",
+        // 原有内容
+        "我想你了！❤️❤️",
+        "我好想你~❤️❤️",
+        "也有好好吃饭❤️❤️",
+        "照顾好自己❤️❤️",
+        "记得多吃水果，补充维生素哦。❤️❤️",
+        "每天都要开开心心的哦❤️❤️",
+        "期待下次的见面❤️❤️",
+        "生日快乐！！！！❤️❤️",
+        "顺顺利利， 万事如意❤️❤️",
+        "乖乖等我，马上就到。❤️❤️",
+        "生日快乐，宝贝❤️❤️",
+        "我们少熬夜好不好❤️❤️",
+        "要多喝水哦~❤️❤️",
+        "不要不开心嘛❤️❤️",
+        "保持好心情，一切都会越来越好。❤️❤️",
+        "保持好心情哦。我来找你玩了哦❤️❤️",
+        "今天有没有想我呀？我很想你。❤️❤️",
+        "我在想你。快来找我玩❤️❤️",
+        "保持微笑呀❤️❤️",
+        "好好穿衣服哦❤️❤️",
+        "今天有没有开心嘛❤️❤️",
+        "今晚的星星，像你眼睛一样明亮❤️❤️",
+        "不开心要和我讲呀❤️❤️",
+        "看到什么都想分享给你❤️❤️",
+        "一起长命百岁呀❤️❤️",
+        "我不管，你要记得想我❤️❤️",
+        "是谁这么可爱！！！是你呀！❤️❤️",
+        "最最最最最最最最最最最喜欢你了！！！❤️❤️",
+        "现在超级想你怎么办？❤️❤️",
+        "有没有想我，你要想我知道吗？❤️❤️",
+        "哈哈哈哈哈，开心！❤️❤️",
+        "明天就要见面了！！！❤️❤️",
+      ];
+
+      const colors = [
+        "#ffb3d1",
+        "#b3e5ff",
+        "#fff4b3",
+        "#b3ffb3",
+        "#e6b3ff",
+        "#ffd9b3",
+        "#ffb3d9",
+        "#b3ffff",
+      ];
+
+      let popupCount = 0;
+      const maxPopups = 100;
+
+      function createSparkle(x, y) {
+        const sparkle = document.createElement("div");
+        sparkle.className = "sparkle";
+        sparkle.style.left = x + "px";
+        sparkle.style.top = y + "px";
+        document.body.appendChild(sparkle);
+        setTimeout(() => sparkle.remove(), 2000);
+      }
+
+      function showPopup() {
+        if (popupCount >= maxPopups) return;
+
+        const message = messages[Math.floor(Math.random() * messages.length)];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+
+        const popup = document.createElement("div");
+        popup.className = "popup";
+        popup.textContent = message;
+        popup.style.backgroundColor = color;
+        popup.style.color = "black";
+
+        const width = Math.floor(Math.random() * 150) + 250;
+        const height = Math.floor(Math.random() * 50) + 90;
+        popup.style.width = width + "px";
+        popup.style.minHeight = height + "px";
+
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+        const x = Math.floor(
+          Math.random() * Math.max(100, screenWidth - width)
+        );
+        const y = Math.floor(
+          Math.random() * Math.max(100, screenHeight - height)
+        );
+
+        popup.style.left = x + "px";
+        popup.style.top = y + "px";
+
+        document.body.appendChild(popup);
+
+        createSparkle(x + width / 2, y + height / 2);
+
+        setTimeout(() => {
+          popup.classList.add("fadeOut");
+          setTimeout(() => popup.remove(), 300);
+        }, 5000);
+
+        popupCount++;
+      }
+
+      function createPopupsSequentially(count) {
+        if (count > 0) {
+          showPopup();
+          setTimeout(() => createPopupsSequentially(count - 1), 60);
+        }
+      }
+
+      function startSurprise() {
+        const button = event.target;
+        button.disabled = true;
+        button.textContent = "惊喜正在打开... ✨";
+        button.style.opacity = "0.7";
+
+        setTimeout(() => {
+          popupCount = 0;
+          createPopupsSequentially(maxPopups);
+
+          setTimeout(() => {
+            button.textContent = "确认";
+            button.disabled = false;
+            button.style.opacity = "1";
+          }, maxPopups * 100 + 6000);
+        }, 300);
+      }
+    </script>
+  </body>
+</html>
